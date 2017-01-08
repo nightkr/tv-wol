@@ -44,20 +44,26 @@ class WoLServer(asyncore.dispatcher):
     def handle_accept(self):
         pair = self.accept()
         if pair is not None:
+            print("New connection from %s" % pair)
             self.connections += 1
             self.update_power_state()
             sock, addr = pair
             DummyHandler(self, sock)
 
     def conn_closed(self):
+        print("Connection dropped")
         self.connections -= 1
         self.update_power_state()
 
     def update_power_state(self):
         if self.connections == 0:
+            print("Turning on...")
             cec_set_power_state(device=self.device, on=False)
+            print("DONE")
         elif self.connections == 1:
+            print("Turning off...")
             cec_set_power_state(device=self.device, on=True)
+            print("DONE")
 
 
 def main():
