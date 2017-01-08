@@ -44,7 +44,7 @@ class WoLServer(asyncore.dispatcher):
     def handle_accept(self):
         pair = self.accept()
         if pair is not None:
-            print("New connection from %s" % pair)
+            print("New connection from %s" % (pair,))
             self.connections += 1
             self.update_power_state()
             sock, addr = pair
